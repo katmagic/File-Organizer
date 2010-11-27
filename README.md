@@ -1,5 +1,7 @@
 File Organizer
 ==============
+_**File Organizer is in development and is not suitable for general use.**_
+
 **Homepage**: [GitHub](https://github.com/katmagic/File-Organizer)<br />
 **Git**: [GitHub](git://github.com/katmagic/File-Organizer.git)<br />
 **License**: [UNLICENSE](http://unlicense.org)<br />
