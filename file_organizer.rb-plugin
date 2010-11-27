@@ -1,0 +1,9 @@
+[RB Plugin]
+Loader=python
+Module=file_organizer
+IAge=1
+Name=File Organizer
+Description=Rename files on the basis of their metadata.
+Authors=katmagic <the.magical.kat@gmail.com>
+Copyright=UNLICENSE (http://unlicense.org/)
+Website=https://github.com/katmagic/File-Organizer
