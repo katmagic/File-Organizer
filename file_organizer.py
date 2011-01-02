@@ -1,9 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from __future__ import print_function
 import rb
 import rhythmdb
 import gtk
+import sys
 import os
+
+if sys.version_info.major > 2:
+	from urllib.parse import unquote as unquote_url
+else:
+	from urllib import unquote as unquote_url
 
 def super_rename(src, dst):
 	"""Move the file at src to dst. If any of dst's parent directories don't
@@ -92,11 +98,17 @@ class FileOrganizer(rb.Plugin):
 		protocol."""
 
 		s = _EscapedRDBEntry(self.rdb, entry)
+
 		uri = entry.get_playback_uri()
 
-		if not uri.startswith("file://"):
-			print("ignoring " % uri)
+		if not uri:
+			print("WTF?! We got something with a blank URI. Ignoring...")
 			return
-		else:
-			new_path = self.new_path.format(s)
-			print("%r -> %r" % (uri, new_path))
+		elif not uri.startswith("file://"):
+			print("ignoring %s" % uri)
+			return
+
+		src = unquote_url( uri.partition("://")[2] )
+		dst = os.path.join(rb.music_dir(), self.new_path.format(s))
+
+		print("%s -> %s" % (src, dst))
