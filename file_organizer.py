@@ -36,6 +36,14 @@ class _RDBEntry(object):
 		p = getattr(rhythmdb, "PROP_"+prop.upper())
 		return self.rdb.entry_get(self.song, p)
 
+class _EscapedRDBEntry(_RDBEntry):
+	def __getattr__(self, prop):
+		res = _RDBEntry.__getattr__(self, prop)
+		if type(res) is str:
+			return res.replace('/', '_')
+		else:
+			return res
+
 class FileOrganizer(rb.Plugin):
 	def activate(self, shell):
 		"""This is called when we're activated or RhythmBox starts."""
@@ -83,7 +91,7 @@ class FileOrganizer(rb.Plugin):
 		"""We're needed because RhythmDB doesn't support the iteration
 		protocol."""
 
-		s = _RDBEntry(self.rdb, entry)
+		s = _EscapedRDBEntry(self.rdb, entry)
 		uri = entry.get_playback_uri()
 
 		if not uri.startswith("file://"):
