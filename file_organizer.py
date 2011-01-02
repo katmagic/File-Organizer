@@ -11,9 +11,13 @@ if sys.version_info.major > 2:
 else:
 	from urllib import unquote as unquote_url
 
-def super_rename(src, dst):
+def super_rename(src, dst, force=False):
 	"""Move the file at src to dst. If any of dst's parent directories don't
 	exist, create them. Recursively prune blank parent directories of src."""
+
+	if not force and os.path.exists(dst):
+		print("%s already exists. Not renaming." % dst)
+		return
 
 	src_dir = os.path.split(src)[0]
 	dst_dir = os.path.split(dst)[0]
