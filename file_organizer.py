@@ -3,18 +3,18 @@ from __future__ import print_function
 import rb
 import rhythmdb
 
+class _RDBEntry(object):
+	"""Our attributes are RhythmDB information."""
+
+	def __init__(self, rdb, song):
+		self.rdb = rdb
+		self.song = song
+
+	def __getattr__(self, prop):
+		p = getattr(rhythmdb, "PROP_"+prop.upper())
+		return self.rdb.entry_get(self.song, p)
+
 class FileOrganizer(rb.Plugin):
-	class RDBEntry(object):
-		"""Our attributes are RhythmDB information."""
-
-		def __init__(self, rdb, song):
-			self.rdb = rdb
-			self.song = song
-
-		def __getattr__(self, prop):
-			p = getattr(rhythmdb, "PROP_"+prop.upper())
-			return self.rdb.entry_get(self.song, p)
-
 	def activate(self, shell):
 		"""This is called when we're activated or RhythmBox starts."""
 
@@ -40,7 +40,7 @@ class FileOrganizer(rb.Plugin):
 			"""We're needed because RhythmDB doesn't support the iteration
 			protocol."""
 
-			s = type(self).RDBEntry(self.rdb, entry)
+			s = _RDBEntry(self.rdb, entry)
 			uri = entry.get_playback_uri()
 
 			if not uri.startswith("file://"):
