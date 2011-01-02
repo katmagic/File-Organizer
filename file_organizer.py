@@ -3,6 +3,27 @@ from __future__ import print_function
 import rb
 import rhythmdb
 import gtk
+import os
+
+def super_rename(src, dst):
+	"""Move the file at src to dst. If any of dst's parent directories don't
+	exist, create them. Recursively prune blank parent directories of src."""
+
+	src_dir = os.path.split(src)[0]
+	dst_dir = os.path.split(dst)[0]
+
+	try:
+		os.makedirs(dst_dir)
+	except OSError as err:
+		if err.strerror is 'File exists':
+			raise
+
+	os.rename(src, dst)
+
+	try:
+		os.removedirs(src_dir)
+	except OSError as err:
+		pass
 
 class _RDBEntry(object):
 	"""Our attributes are RhythmDB information."""
