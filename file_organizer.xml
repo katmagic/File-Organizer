@@ -1,0 +1,7 @@
+<ui>
+  <menubar name="MenuBar">
+    <menu name="ToolsMenu" action="Tools">
+        <menuitem name="OrganizeFiles" action="OrganizeFiles" />
+    </menu>
+  </menubar>
+</ui>
