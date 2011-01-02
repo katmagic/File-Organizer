@@ -36,18 +36,18 @@ class FileOrganizer(rb.Plugin):
 	def organize(self):
 		"""Rename all the music in our database based on its metadata."""
 
-		def organize_entry(entry):
-			"""We're needed because RhythmDB doesn't support the iteration
-			protocol."""
+		self.rdb.entry_foreach(lambda e: self.organize_single_entry(e))
 
-			s = _RDBEntry(self.rdb, entry)
-			uri = entry.get_playback_uri()
+	def organize_single_entry(self, entry):
+		"""We're needed because RhythmDB doesn't support the iteration
+		protocol."""
 
-			if not uri.startswith("file://"):
-				print("ignoring " % uri)
-				return
-			else:
-				new_path = self.new_path.format(s)
-				print("%r -> %r" % (uri, new_path))
+		s = _RDBEntry(self.rdb, entry)
+		uri = entry.get_playback_uri()
 
-		self.rdb.entry_foreach(organize_entry)
+		if not uri.startswith("file://"):
+			print("ignoring " % uri)
+			return
+		else:
+			new_path = self.new_path.format(s)
+			print("%r -> %r" % (uri, new_path))
