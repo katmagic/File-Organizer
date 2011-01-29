@@ -25,7 +25,7 @@ def super_rename(src, dst, force=False):
 	src_dir = os.path.split(src)[0]
 	dst_dir = os.path.split(dst)[0]
 
-	try:
+	if not os.path.isdir(dst_dir):
 		os.makedirs(dst_dir)
 	except OSError as err:
 		if err.strerror is 'File exists':
