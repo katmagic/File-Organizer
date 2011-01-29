@@ -78,17 +78,26 @@ class FileOrganizer(rb.Plugin):
 		)
 		action.connect('activate', self.organize, self.shell)
 
-		action_group = gtk.ActionGroup('OrganizeFilesActionGroup')
-		action_group.add_action(action)
-		self.uim.insert_action_group(action_group)
+		self.action_group = gtk.ActionGroup('OrganizeFilesActionGroup')
+		self.action_group.add_action(action)
+		self.uim.insert_action_group(self.action_group)
 
-		self.uim.add_ui_from_file( self.find_file("file_organizer.xml") )
+		ui_file = self.find_file("file_organizer.xml")
+		# self.uim.remove_ui() needs this to destroy our menu entry.
+		self.ui_id = self.uim.add_ui_from_file(ui_file)
+
+	def remove_organize_tool(self):
+		"""Remove the 'Organize Files' entry from the 'Tools' menu."""
+
+		self.uim.remove_ui(self.ui_id)
+		self.uim.remove_action_group(self.action_group)
 
 	def deactivate(self, shell):
 		"""This is called when we're deactivated or RhythmBox exits."""
 
-		print("deactivating")
+		print("deactivating...")
 
+		self.remove_organize_tool()
 		del self.shell, self.rdb, self.uim
 
 	def organize(self, *_): # The arguments that go into _ are useless.
