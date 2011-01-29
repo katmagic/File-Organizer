@@ -19,23 +19,19 @@ def super_rename(src, dst, force=False):
 		return
 
 	if not force and os.path.exists(dst):
-		print("%s already exists. Not renaming." % dst)
-		return
+		raise OSError("[Errno 17] File exists: '%r'" % dst)
 
 	src_dir = os.path.split(src)[0]
 	dst_dir = os.path.split(dst)[0]
 
 	if not os.path.isdir(dst_dir):
 		os.makedirs(dst_dir)
-	except OSError as err:
-		if err.strerror is 'File exists':
-			raise
 
 	os.rename(src, dst)
 
 	try:
 		os.removedirs(src_dir)
-	except OSError as err:
+	except OSError:
 		pass
 
 class _RDBEntry(object):
@@ -112,10 +108,14 @@ class FileOrganizer(rb.Plugin):
 			print("WTF?! We got something with a blank URI. Ignoring...")
 			return
 		elif not uri.startswith("file://"):
-			print("ignoring %s" % uri)
+			print("ignoring %r..." % uri)
 			return
 
 		src = unquote_url( uri.partition("://")[2] )
 		dst = os.path.join(rb.music_dir(), self.new_path.format(s))
 
-		print("%s -> %s" % (src, dst))
+		try:
+			print("%s -> %s" % (src, dst))
+			super_rename(src, dst)
+		except OSError as err:
+			print( str(err) )
