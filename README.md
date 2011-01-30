@@ -24,6 +24,13 @@ From our source directory run
 
 in a terminal and restart Rhythmbox if it's open.
 
+Usage
+-----
+
+Simply select 'Organize Files' from the 'Tools' menu in Rhythmbox. Then, all
+your music will be in
+"<RhythmBox Music Directory>/<Artist>/<Album>/<Track Number> - <Title>.mp3".
+
 License
 -------
 
