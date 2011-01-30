@@ -19,7 +19,7 @@ def super_rename(src, dst, force=False):
 		return
 
 	if not force and os.path.exists(dst):
-		raise OSError("[Errno 17] File exists: '%r'" % dst)
+		raise OSError("[Errno 17] File exists: %r" % dst)
 
 	src_dir = os.path.split(src)[0]
 	dst_dir = os.path.split(dst)[0]
