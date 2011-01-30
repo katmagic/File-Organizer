@@ -113,11 +113,7 @@ class FileOrganizer(rb.Plugin):
 
 		uri = entry.get_playback_uri()
 
-		if not uri:
-			print("WTF?! We got something with a blank URI. Ignoring...")
-			return
-		elif not uri.startswith("file://"):
-			print("ignoring %r..." % uri)
+		if not uri or not uri.startswith("file://"):
 			return
 
 		src = unquote_url( uri.partition("://")[2] )
