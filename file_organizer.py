@@ -15,7 +15,7 @@ def super_rename(src, dst, force=False):
 	"""Move the file at src to dst. If any of dst's parent directories don't
 	exist, create them. Recursively prune blank parent directories of src."""
 
-	if src is dst:
+	if src == dst:
 		return
 
 	if not force and os.path.exists(dst):
