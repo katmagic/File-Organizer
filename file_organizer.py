@@ -120,7 +120,8 @@ class FileOrganizer(rb.Plugin):
 		dst = os.path.join(rb.music_dir(), self.new_path.format(s))
 
 		try:
-			print("%s -> %s" % (src, dst))
-			super_rename(src, dst)
+			if src != dst:
+				print("%s -> %s" % (src, dst))
+				super_rename(src, dst)
 		except OSError as err:
 			print( str(err) )
